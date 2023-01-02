@@ -1,9 +1,6 @@
 use std::fmt::{Display, Formatter, Result};
 
-use diesel::{r2d2::ConnectionManager, PgConnection};
 use serde::Deserialize;
-
-pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
 #[derive(Deserialize, Debug)]
 pub enum SortDirection {

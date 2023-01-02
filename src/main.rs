@@ -3,7 +3,10 @@ use actix_web::{
     web::{self, Data},
     App, HttpServer,
 };
-use diesel::{r2d2::ConnectionManager, PgConnection};
+
+use diesel_async::pooled_connection::deadpool::Pool;
+use diesel_async::pooled_connection::AsyncDieselConnectionManager;
+
 use dotenvy::dotenv;
 use user::user_service::UserService;
 
@@ -18,11 +21,12 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
-    let manager = ConnectionManager::<PgConnection>::new(database_url);
-    let pool = r2d2::Pool::builder()
-        .test_on_check_out(true)
-        .build(manager)
-        .expect("Failed to create pool.");
+
+    let manager =
+        AsyncDieselConnectionManager::<diesel_async::AsyncPgConnection>::new(database_url);
+    let pool = Pool::builder(manager)
+        .build()
+        .expect("Unable to create connection pool");
 
     let user_service = UserService::new(pool);
 

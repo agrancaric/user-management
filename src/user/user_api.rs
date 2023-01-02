@@ -13,7 +13,9 @@ async fn get_all(
     request: web::Query<PageRequest>,
 ) -> Result<HttpResponse, UserManagmenetError> {
     let request = request.into_inner();
-    let users = user_service.find_all(request.offset, request.limit, request.sort_properties)?;
+    let users = user_service
+        .find_all(request.offset, request.limit, request.sort_properties)
+        .await?;
 
     Ok(HttpResponse::Ok().json(users))
 }
@@ -24,7 +26,7 @@ async fn get(
     id: web::Path<i32>,
 ) -> Result<HttpResponse, UserManagmenetError> {
     let user_id = id.into_inner();
-    let user = user_service.find_by_id(user_id)?;
+    let user = user_service.find_by_id(user_id).await?;
 
     Ok(HttpResponse::Ok().json(user))
 }
@@ -42,7 +44,7 @@ async fn create(
         email: &user.email,
     };
 
-    let user = user_service.save(user)?;
+    let user = user_service.save(user).await?;
 
     Ok(HttpResponse::Ok().json(user))
 }
@@ -62,7 +64,7 @@ async fn update(
         email: &user.email,
     };
 
-    let user = user_service.update(user_id, user)?;
+    let user = user_service.update(user_id, user).await?;
 
     Ok(HttpResponse::Ok().json(user))
 }
@@ -74,7 +76,7 @@ async fn delete(
 ) -> Result<HttpResponse, UserManagmenetError> {
     let user_id = id.into_inner();
 
-    user_service.delete(user_id)?;
+    user_service.delete(user_id).await?;
 
     Ok(HttpResponse::Ok().json(user_id))
 }
