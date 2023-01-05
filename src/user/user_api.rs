@@ -15,6 +15,7 @@ pub fn init(user_service: UserService) -> impl HttpServiceFactory {
         .service(find_by_id)
         .service(create)
         .service(update)
+        .service(delete)
 }
 
 #[get("")]

@@ -9,15 +9,19 @@ use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 
-pub fn init_pool_and_execute_migrations(database_url: &str) -> Pool<AsyncPgConnection> {
+pub fn init_pool_and_execute_migrations(
+    database_url: &str,
+    pool_size: usize,
+) -> Pool<AsyncPgConnection> {
     execute_migrations(database_url);
-    init_pool(database_url)
+    init_pool(database_url, pool_size)
 }
 
-pub fn init_pool(database_url: &str) -> Pool<AsyncPgConnection> {
+pub fn init_pool(database_url: &str, pool_size: usize) -> Pool<AsyncPgConnection> {
     let manager = AsyncDieselConnectionManager::new(database_url);
 
     Pool::builder(manager)
+        .max_size(pool_size)
         .build()
         .expect("Unable to create connection pool")
 }
