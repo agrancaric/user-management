@@ -2,7 +2,7 @@ use crate::schema::user;
 use diesel::{AsChangeset, Identifiable, Insertable, Queryable};
 use serde::Serialize;
 
-#[derive(Identifiable, Serialize, Queryable)]
+#[derive(Debug, Identifiable, Serialize, Queryable)]
 #[diesel(table_name = user)]
 pub struct User {
     pub id: i32,
@@ -11,7 +11,7 @@ pub struct User {
     pub email: String,
 }
 
-#[derive(Insertable, AsChangeset)]
+#[derive(Clone, Copy, Debug, Insertable, AsChangeset)]
 #[diesel(table_name = user)]
 pub struct UserData<'a> {
     pub first_name: &'a str,
