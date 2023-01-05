@@ -1,18 +1,9 @@
-use crate::user::user_api;
-use actix_web::{
-    web::{self, Data},
-    App, HttpServer,
-};
-
-use diesel_async::pooled_connection::deadpool::Pool;
-use diesel_async::pooled_connection::AsyncDieselConnectionManager;
+use actix_web::{App, HttpServer};
 
 use dotenvy::dotenv;
-use user::user_service::UserService;
-
-mod common;
-mod schema;
-mod user;
+use user_management::common::database::init_pool_and_execute_migrations;
+use user_management::user::user_api;
+use user_management::user::user_service::UserService;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -22,25 +13,11 @@ async fn main() -> std::io::Result<()> {
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
 
-    let manager =
-        AsyncDieselConnectionManager::<diesel_async::AsyncPgConnection>::new(database_url);
-    let pool = Pool::builder(manager)
-        .build()
-        .expect("Unable to create connection pool");
+    let pool = init_pool_and_execute_migrations(&database_url);
+    let user_service = UserService::new(pool.clone());
 
-    let user_service = UserService::new(pool);
-
-    HttpServer::new(move || {
-        App::new().service(
-            web::scope("users")
-                .app_data(Data::new(user_service.clone()))
-                .service(user_api::get_all)
-                .service(user_api::get)
-                .service(user_api::create)
-                .service(user_api::update),
-        )
-    })
-    .bind(("127.0.0.1", 8081))?
-    .run()
-    .await
+    HttpServer::new(move || App::new().service(user_api::init(user_service.clone())))
+        .bind(("127.0.0.1", 8081))?
+        .run()
+        .await
 }

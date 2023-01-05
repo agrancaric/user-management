@@ -1,14 +1,24 @@
+use actix_web::dev::HttpServiceFactory;
+use actix_web::web::Data;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 
 use crate::common::errors::UserManagmenetError;
 use crate::common::requests::PageRequest;
 use crate::user::user_models::UserData;
 use crate::user::user_request::SaveUserRequest;
+use crate::user::user_service::UserService;
 
-use super::user_service::UserService;
+pub fn init(user_service: UserService) -> impl HttpServiceFactory {
+    web::scope("users")
+        .app_data(Data::new(user_service.clone()))
+        .service(find_all)
+        .service(find_by_id)
+        .service(create)
+        .service(update)
+}
 
 #[get("")]
-async fn get_all(
+async fn find_all(
     user_service: web::Data<UserService>,
     request: web::Query<PageRequest>,
 ) -> Result<HttpResponse, UserManagmenetError> {
@@ -21,7 +31,7 @@ async fn get_all(
 }
 
 #[get("/{id}")]
-async fn get(
+async fn find_by_id(
     user_service: web::Data<UserService>,
     id: web::Path<i32>,
 ) -> Result<HttpResponse, UserManagmenetError> {
