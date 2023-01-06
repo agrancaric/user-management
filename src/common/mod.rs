@@ -1,5 +1,5 @@
-pub mod types;
-pub mod requests;
-pub mod macros;
-pub mod errors;
 pub mod database;
+pub mod errors;
+pub mod macros;
+pub mod requests;
+pub mod types;
