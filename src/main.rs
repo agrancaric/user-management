@@ -12,8 +12,12 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
+    let pool_size = std::env::var("DATABASE_POOL_SIZE")
+        .expect("DATABASE_POOL_SIZE must be set!")
+        .parse()
+        .unwrap();
 
-    let pool = init_pool_and_execute_migrations(&database_url, 10);
+    let pool = init_pool_and_execute_migrations(&database_url, pool_size);
     let user_service = UserService::new(pool.clone());
 
     HttpServer::new(move || App::new().service(user_api::init(user_service.clone())))
