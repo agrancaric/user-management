@@ -4,9 +4,10 @@ use actix_web::{delete, get, post, put, web, HttpResponse};
 
 use crate::common::errors::UserManagmenetError;
 use crate::common::requests::PageRequest;
-use crate::user::user_models::UserData;
-use crate::user::user_request::SaveUserRequest;
-use crate::user::user_service::UserService;
+
+use super::user_models::UserData;
+use super::user_request::SaveUserRequest;
+use super::user_service::UserService;
 
 pub fn init(user_service: UserService) -> impl HttpServiceFactory {
     web::scope("users")
