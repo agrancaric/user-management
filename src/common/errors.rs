@@ -13,6 +13,12 @@ pub enum ErrorType {
     UserError(String),
 }
 
+impl Display for ErrorType {
+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+        write!(formatter, "{:?}", self)
+    }
+}
+
 #[derive(Debug)]
 pub struct UserManagmenetError {
     pub message: String,
