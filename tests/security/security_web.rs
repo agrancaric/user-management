@@ -9,7 +9,7 @@ async fn should_skip_token_validation_for_security_endpoint() {
     let request = TestRequest::post().uri("/security").to_srv_request();
 
     // when
-    let result = jwt_credentials_extractor(request, Option::None).await;
+    let result = jwt_credentials_extractor(request, None).await;
 
     // then
     assert!(result.is_ok());
@@ -21,7 +21,7 @@ async fn should_return_error_on_missing_token() {
     let request = TestRequest::post().uri("/secured").to_srv_request();
 
     // when
-    let result = jwt_credentials_extractor(request, Option::None).await;
+    let result = jwt_credentials_extractor(request, None).await;
 
     // then
     assert!(result.is_err());
