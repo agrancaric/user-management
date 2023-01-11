@@ -1,3 +1,5 @@
+use std::env;
+
 use actix_web::{App, HttpServer};
 
 use actix_web_httpauth::middleware::HttpAuthentication;
@@ -10,12 +12,12 @@ use user_management::user::user_service::UserService;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    std::env::set_var("RUST_LOG", "debug");
+    env::set_var("RUST_LOG", "debug");
     env_logger::init();
     dotenv().ok();
 
-    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
-    let pool_size = std::env::var("DATABASE_POOL_SIZE")
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
+    let pool_size = env::var("DATABASE_POOL_SIZE")
         .expect("DATABASE_POOL_SIZE must be set!")
         .parse()
         .unwrap();

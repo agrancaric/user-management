@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{time::Duration, env};
 
 use ctor::dtor;
 use diesel_async::{pooled_connection::deadpool::Pool, AsyncPgConnection};
@@ -32,8 +32,8 @@ unsafe impl Sync for UserManagementTestContext<'_> {}
 
 impl<'a> UserManagementTestContext<'a> {
     pub fn new() -> Self {
-        std::env::set_var("JWT_SECRET", "SECRET");
-        std::env::set_var("RUST_BACKTRACE", "full");
+        env::set_var("JWT_SECRET", "SECRET");
+        env::set_var("RUST_BACKTRACE", "full");
         env_logger::init();
 
         let (container, database_url) = start_postgres_container();
