@@ -1,7 +1,7 @@
-use chrono::Utc;
 use std::fmt::{Display, Formatter, Result};
 
 use actix_web::{HttpResponse, ResponseError};
+use chrono::Utc;
 use diesel::result::Error as DieselError;
 use jsonwebtoken::errors::Error as JwtError;
 use log::error;

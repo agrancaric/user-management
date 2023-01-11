@@ -8,6 +8,7 @@ use actix_web::{
 use actix_web_httpauth::middleware::HttpAuthentication;
 use diesel_async::RunQueryDsl;
 use serde_json::{json, Value};
+
 use user_management::{
     schema::user,
     security::{

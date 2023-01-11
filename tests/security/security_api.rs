@@ -4,6 +4,7 @@ use actix_web::{
     test, App,
 };
 use serde_json::json;
+
 use user_management::security::security_api;
 
 use crate::security::test_util::init_test_environment;

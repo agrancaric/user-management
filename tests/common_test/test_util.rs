@@ -1,4 +1,4 @@
-use std::{time::Duration, env};
+use std::{env, time::Duration};
 
 use ctor::dtor;
 use diesel_async::{pooled_connection::deadpool::Pool, AsyncPgConnection};
@@ -9,6 +9,7 @@ use testcontainers::{
     images::{self, generic::GenericImage},
     Container,
 };
+
 use user_management::common::database::init_pool_and_execute_migrations;
 
 static DOCKER_CLIENT: Lazy<Cli> = Lazy::new(|| clients::Cli::default());
@@ -28,6 +29,7 @@ pub struct UserManagementTestContext<'a> {
 }
 
 unsafe impl Send for UserManagementTestContext<'_> {}
+
 unsafe impl Sync for UserManagementTestContext<'_> {}
 
 impl<'a> UserManagementTestContext<'a> {

@@ -1,9 +1,9 @@
 use std::env;
 
 use actix_web::{App, HttpServer};
-
 use actix_web_httpauth::middleware::HttpAuthentication;
 use dotenvy::dotenv;
+
 use user_management::common::database::init_pool_and_execute_migrations;
 use user_management::security::security_api;
 use user_management::security::security_web::jwt_credentials_extractor;

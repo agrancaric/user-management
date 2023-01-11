@@ -105,7 +105,10 @@ async fn should_report_error_if_user_doesnt_exist() {
     let response = init_application_and_execute_request(request, "UM_USER_UPDATE").await;
 
     // then
-    assert_eq!(response.response().status(), StatusCode::INTERNAL_SERVER_ERROR);
+    assert_eq!(
+        response.response().status(),
+        StatusCode::INTERNAL_SERVER_ERROR
+    );
 
     // and when
     let result: Value = test::read_body_json(response).await;

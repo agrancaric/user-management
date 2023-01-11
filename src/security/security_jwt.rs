@@ -8,8 +8,7 @@ use serde_json::json;
 
 use super::security_model::UserDetails;
 
-const SECRET: Lazy<String> =
-    Lazy::new(|| env::var("JWT_SECRET").expect("JWT_SECRET must be set!"));
+const SECRET: Lazy<String> = Lazy::new(|| env::var("JWT_SECRET").expect("JWT_SECRET must be set!"));
 
 pub fn encode_jwt(user_details: &UserDetails) -> Result<String, Error> {
     let secret = SECRET;

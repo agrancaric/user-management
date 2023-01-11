@@ -1,6 +1,7 @@
-use crate::schema::user;
 use diesel::{AsChangeset, Identifiable, Insertable, Queryable};
 use serde::Serialize;
+
+use crate::schema::user;
 
 #[derive(Debug, Identifiable, Serialize, Queryable)]
 #[diesel(table_name = user)]

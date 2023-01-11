@@ -11,7 +11,7 @@ pub async fn jwt_credentials_extractor(
     request: ServiceRequest,
     credentials: Option<BearerAuth>,
 ) -> Result<ServiceRequest, (Error, ServiceRequest)> {
-    // used for generating token, so aways allowed
+    // used for generating token, so always allowed
     if request.path().contains(IGNORED_PATH) {
         return Ok(request);
     }

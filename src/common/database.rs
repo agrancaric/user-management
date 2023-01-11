@@ -1,10 +1,9 @@
+use diesel::pg::PgConnection;
+use diesel::Connection;
 use diesel_async::{
     pooled_connection::{deadpool::Pool, AsyncDieselConnectionManager},
     AsyncPgConnection,
 };
-
-use diesel::pg::PgConnection;
-use diesel::Connection;
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
