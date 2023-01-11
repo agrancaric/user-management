@@ -2,7 +2,7 @@ version: "3.8"
 services:
   postgresdb:
     image: postgres:14.1-alpine
-    container_name: user-managemenet-database
+    container_name: user-management-database
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
