@@ -32,6 +32,7 @@ unsafe impl Sync for UserManagementTestContext<'_> {}
 
 impl<'a> UserManagementTestContext<'a> {
     pub fn new() -> Self {
+        std::env::set_var("JWT_SECRET", "SECRET");
         std::env::set_var("RUST_BACKTRACE", "full");
         env_logger::init();
 

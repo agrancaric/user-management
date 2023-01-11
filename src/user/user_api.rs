@@ -1,6 +1,7 @@
 use actix_web::dev::HttpServiceFactory;
 use actix_web::web::Data;
 use actix_web::{delete, get, post, put, web, HttpResponse};
+use actix_web_grants::proc_macro::has_permissions;
 
 use crate::common::errors::UserManagmenetError;
 use crate::common::requests::PageRequest;
@@ -14,11 +15,12 @@ pub fn init(user_service: UserService) -> impl HttpServiceFactory {
         .app_data(Data::new(user_service.clone()))
         .service(find_all)
         .service(find_by_id)
-        .service(create)
+        .service(save)
         .service(update)
         .service(delete)
 }
 
+#[has_permissions("UM_USER_FIND_ALL")]
 #[get("")]
 async fn find_all(
     user_service: web::Data<UserService>,
@@ -32,6 +34,7 @@ async fn find_all(
     Ok(HttpResponse::Ok().json(users))
 }
 
+#[has_permissions("UM_USER_FIND_BY_ID")]
 #[get("/{id}")]
 async fn find_by_id(
     user_service: web::Data<UserService>,
@@ -43,8 +46,9 @@ async fn find_by_id(
     Ok(HttpResponse::Ok().json(user))
 }
 
+#[has_permissions("UM_USER_SAVE")]
 #[post("")]
-async fn create(
+async fn save(
     user_service: web::Data<UserService>,
     user: web::Json<SaveUserRequest>,
 ) -> Result<HttpResponse, UserManagmenetError> {
@@ -61,6 +65,7 @@ async fn create(
     Ok(HttpResponse::Ok().json(user))
 }
 
+#[has_permissions("UM_USER_UPDATE")]
 #[put("/{id}")]
 async fn update(
     user_service: web::Data<UserService>,
@@ -81,6 +86,7 @@ async fn update(
     Ok(HttpResponse::Ok().json(user))
 }
 
+#[has_permissions("UM_USER_DELETE")]
 #[delete("/{id}")]
 async fn delete(
     user_service: web::Data<UserService>,

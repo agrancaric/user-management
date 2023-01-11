@@ -1,16 +1,18 @@
-use chrono::Local;
+use chrono::Utc;
 use std::fmt::{Display, Formatter, Result};
 
 use actix_web::{HttpResponse, ResponseError};
-use diesel::result::Error;
+use diesel::result::Error as DieselError;
+use jsonwebtoken::errors::Error as JwtError;
 use log::error;
 use serde_json::json;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub enum ErrorType {
-    DieselError(Error),
-    UserError(String),
+    DatabaseError(DieselError),
+    AuthenticationError,
+    UserError,
 }
 
 impl Display for ErrorType {
@@ -34,17 +36,30 @@ impl Display for UserManagmenetError {
 impl ResponseError for UserManagmenetError {
     fn error_response(&self) -> HttpResponse {
         error!("Error occurred with message: {}", self.message);
+        let response =
+            json!({"error": self.message.to_string(), "timestamp": Utc::now().to_string()});
 
-        HttpResponse::InternalServerError()
-            .json(json!({"error": self.message.to_string(), "timestamp": Local::now().to_string()}))
+        match self.error_type {
+            ErrorType::AuthenticationError => HttpResponse::Unauthorized().json(response),
+            _ => HttpResponse::InternalServerError().json(response),
+        }
     }
 }
 
-impl From<Error> for UserManagmenetError {
-    fn from(error: Error) -> UserManagmenetError {
+impl From<DieselError> for UserManagmenetError {
+    fn from(error: DieselError) -> UserManagmenetError {
         UserManagmenetError {
             message: error.to_string(),
-            error_type: ErrorType::DieselError(error),
+            error_type: ErrorType::DatabaseError(error),
+        }
+    }
+}
+
+impl From<JwtError> for UserManagmenetError {
+    fn from(error: JwtError) -> UserManagmenetError {
+        UserManagmenetError {
+            message: error.to_string(),
+            error_type: ErrorType::AuthenticationError,
         }
     }
 }
