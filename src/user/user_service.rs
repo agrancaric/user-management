@@ -1,7 +1,11 @@
 use diesel::{result::Error, ExpressionMethods, QueryDsl};
 use diesel_async::{pooled_connection::deadpool::Pool, AsyncPgConnection, RunQueryDsl};
 
-use crate::{common::types::SortProperty, schema::user, sort_by};
+use crate::{
+    common::types::{Page, SortProperty},
+    schema::user,
+    sort_by,
+};
 
 use super::user_models::{User, UserData};
 
@@ -25,7 +29,7 @@ impl UserService {
         offset: i64,
         limit: i64,
         sort_properties: Option<Vec<SortProperty>>,
-    ) -> Result<Vec<User>, Error> {
+    ) -> Result<Page<User>, Error> {
         let mut query = user::table.into_boxed();
 
         query = sort_by!(
@@ -37,11 +41,24 @@ impl UserService {
             ("email", user::email)
         );
 
-        query
+        let users = query
             .offset(offset)
             .limit(limit)
             .get_results(&mut *self.pool.get().await.unwrap())
-            .await
+            .await?;
+
+        let total_count;
+
+        if users.is_empty() {
+            total_count = 0;
+        } else {
+            total_count = user::table
+                .count()
+                .get_result(&mut *self.pool.get().await.unwrap())
+                .await?
+        }
+
+        Result::Ok(Page::new(total_count, users))
     }
 
     pub async fn find_by_id(&self, id: i32) -> Result<User, Error> {

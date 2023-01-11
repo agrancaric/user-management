@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter, Result};
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
 pub enum SortDirection {
@@ -18,4 +18,19 @@ impl Display for SortDirection {
 pub struct SortProperty {
     pub property: String,
     pub direction: SortDirection,
+}
+
+#[derive(Deserialize, Debug, Serialize)]
+pub struct Page<T> {
+    pub total_elements: i64,
+    pub content: Vec<T>,
+}
+
+impl<T> Page<T> {
+    pub fn new(total_elements: i64, content: Vec<T>) -> Page<T> {
+        Self {
+            total_elements,
+            content,
+        }
+    }
 }

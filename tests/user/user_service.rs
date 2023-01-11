@@ -27,7 +27,8 @@ async fn should_find_all_users() {
         .unwrap();
 
     // then
-    assert_eq!(result.first().unwrap().email, user.email);
+    assert!(result.total_elements > 0);
+    assert_eq!(result.content.first().unwrap().email, user.email);
 }
 
 #[actix_rt::test]
