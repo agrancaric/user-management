@@ -1,5 +1,8 @@
 use actix_test::TestRequest;
-use actix_web::{http::header::ContentType, test, App};
+use actix_web::{
+    http::{header::ContentType, StatusCode},
+    test, App,
+};
 use serde_json::json;
 use user_management::security::security_api;
 
@@ -9,7 +12,7 @@ use crate::security::test_util::init_test_environment;
 async fn should_generate_token() {
     // given
     init_test_environment();
-     let user = json!({
+    let user = json!({
         "username": "username",
         "permissions": ["UM_USER_FIND"],
     });
@@ -25,7 +28,7 @@ async fn should_generate_token() {
     let response = test::call_service(&application, request).await;
 
     // then
-    assert!(response.status().is_success());
+    assert_eq!(response.status(), StatusCode::OK);
 
     // and when
     let result: String = test::read_body_json(response).await;

@@ -17,7 +17,7 @@ async fn should_find_all_users() {
     let response = init_application_and_execute_request(request, "UM_USER_FIND_ALL").await;
 
     // then
-    assert!(response.status().is_success());
+    assert_eq!(response.response().status(), StatusCode::OK);
 }
 
 #[actix_web::test]
@@ -30,7 +30,7 @@ async fn should_find_user_by_id() {
     let response = init_application_and_execute_request(request, "UM_USER_FIND_BY_ID").await;
 
     // then
-    assert!(response.status().is_success());
+    assert_eq!(response.response().status(), StatusCode::OK);
 
     // and when
     let result: Value = test::read_body_json(response).await;
@@ -49,7 +49,7 @@ async fn should_save_user() {
     let response = init_application_and_execute_request(request, "UM_USER_SAVE").await;
 
     // then
-    assert!(response.response().status().is_success());
+    assert_eq!(response.response().status(), StatusCode::OK);
 
     // and when
     let result: Value = test::read_body_json(response).await;
@@ -68,7 +68,7 @@ async fn should_report_error_if_save_user_data_is_invalid() {
     let response = init_application_and_execute_request(request, "UM_USER_SAVE").await;
 
     // then
-    assert!(response.response().status().is_client_error());
+    assert_eq!(response.response().status(), StatusCode::BAD_REQUEST);
 }
 
 #[actix_web::test]
@@ -84,7 +84,7 @@ async fn should_update_user() {
     let response = init_application_and_execute_request(request, "UM_USER_UPDATE").await;
 
     // then
-    assert!(response.response().status().is_success());
+    assert_eq!(response.response().status(), StatusCode::OK);
 
     // and when
     let result: Value = test::read_body_json(response).await;
@@ -105,7 +105,7 @@ async fn should_report_error_if_user_doesnt_exist() {
     let response = init_application_and_execute_request(request, "UM_USER_UPDATE").await;
 
     // then
-    assert!(response.response().status().is_server_error());
+    assert_eq!(response.response().status(), StatusCode::INTERNAL_SERVER_ERROR);
 
     // and when
     let result: Value = test::read_body_json(response).await;
@@ -127,7 +127,7 @@ async fn should_delete_user() {
     let response = init_application_and_execute_request(request, "UM_USER_DELETE").await;
 
     // then
-    assert!(response.response().status().is_success());
+    assert_eq!(response.response().status(), StatusCode::OK);
 }
 
 #[test_case(TestRequest::get().uri("/users?offset=0&limit=10"); "when finding all users")]
@@ -139,8 +139,6 @@ async fn should_delete_user() {
 async fn should_return_forbidden_status_for_invalid_permissions(request: TestRequest) {
     // when
     let response = init_application_and_execute_request(request, "INVALID").await;
-
-    println!("responsse: {:?}", response.response());
 
     // then
     assert_eq!(response.response().status(), StatusCode::FORBIDDEN);
