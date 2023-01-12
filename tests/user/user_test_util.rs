@@ -69,7 +69,7 @@ pub async fn save_user(first_name: &str, last_name: &str, email: &str) -> User {
 }
 
 pub fn create_user_json() -> Value {
-    json!({"first_name": "first", "last_name": "last", "email": "email@test.com"})
+    json!({ "first_name": "first", "last_name": "last", "email": "email@test.com" })
 }
 
 fn get_token(permission: &str) -> String {

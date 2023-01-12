@@ -42,7 +42,7 @@ async fn should_find_user_by_id() {
 #[actix_web::test]
 async fn should_save_user() {
     // given
-    let user = json!({"first_name": "first", "last_name": "last", "email": "email@test.com"});
+    let user = json!({ "first_name": "first", "last_name": "last", "email": "email@test.com" });
     let request = TestRequest::post().uri("/users").set_json(&user);
 
     // when
@@ -61,7 +61,7 @@ async fn should_save_user() {
 #[actix_web::test]
 async fn should_report_error_if_save_user_data_is_invalid() {
     // given
-    let user = json!({"first_name": "first", "email": "email@test.com"});
+    let user = json!({ "first_name": "first", "email": "email@test.com" });
     let request = TestRequest::post().uri("/users").set_json(&user);
 
     // when
@@ -96,7 +96,7 @@ async fn should_update_user() {
 #[actix_web::test]
 async fn should_report_error_if_user_doesnt_exist() {
     // given
-    let updated_user = json!({"first_name": "updated_first", "last_name": "updated_last", "email": "updated@test.com"});
+    let updated_user = json!({ "first_name": "updated_first", "last_name": "updated_last", "email": "updated@test.com" });
     let request = TestRequest::put()
         .uri("/users/11111111")
         .set_json(&updated_user);
