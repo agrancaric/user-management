@@ -4,7 +4,6 @@ use actix_web::{HttpResponse, ResponseError};
 use chrono::Utc;
 use diesel::result::Error as DieselError;
 use jsonwebtoken::errors::Error as JwtError;
-use log::error;
 use serde_json::json;
 
 #[allow(dead_code)]
@@ -35,9 +34,9 @@ impl Display for UserManagmenetError {
 
 impl ResponseError for UserManagmenetError {
     fn error_response(&self) -> HttpResponse {
-        error!("Error occurred with message: {}", self.message);
+        log::error!("Error occurred with message: {}", self.message);
         let response =
-            json!({"error": self.message.to_string(), "timestamp": Utc::now().to_string()});
+            json!({ "error": self.message.to_string(), "timestamp": Utc::now().to_string() });
 
         match self.error_type {
             ErrorType::AuthenticationError => HttpResponse::Unauthorized().json(response),

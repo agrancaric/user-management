@@ -1,7 +1,6 @@
 use actix_web::{dev::ServiceRequest, error::ErrorUnauthorized, Error};
 use actix_web_grants::permissions::AttachPermissions;
 use actix_web_httpauth::extractors::bearer::BearerAuth;
-use log::error;
 
 use super::security_jwt::decode_jwt;
 
@@ -29,7 +28,7 @@ pub async fn jwt_credentials_extractor(
             Ok(request)
         }
         Err(error) => {
-            error!("Error occurred while validating token: {:?}", error);
+            log::error!("Error occurred while validating token: {:?}", error);
 
             Err((ErrorUnauthorized("Invalid token"), request))
         }
