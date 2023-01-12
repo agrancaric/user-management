@@ -1,0 +1,27 @@
+[tasks.format]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--", "--emit=files"]
+
+[tasks.build-release]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.install-llvm]
+install_crate = { rustup_component_name = "llvm-tools-preview", binary = "llvm-profdata", test_arg = "--help" }
+
+[tasks.install-rustfilt]
+install_crate = { rustup_component_name = "rustfilt", binary = "rustfilt", test_arg = "--help" }
+
+[tasks.install-llvm-cov]
+install_crate = "cargo-llvm-cov"
+
+[tasks.coverage-html]
+command = "cargo"
+args  = ["llvm-cov", "--html"]
+dependencies = ["install-rustfilt", "install-llvm", "install-llvm-cov"]
+
+[tasks.coverage-json]
+command = "cargo"
+args = ["llvm-cov", "--json", "--output-path", "target/coverage.json"]
+dependencies = ["install-rustfilt", "install-llvm", "install-llvm-cov"]
