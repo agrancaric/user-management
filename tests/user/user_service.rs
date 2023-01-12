@@ -14,7 +14,7 @@ use super::user_test_util::save_user;
 async fn should_find_all_users() {
     // given
     let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
-    let user = save_user("first", "last", "zemail@test.com").await;
+    let user = save_user("first", "last", "zzemail@test.com").await;
     let sort_properties = vec![SortProperty {
         property: "email".to_string(),
         direction: SortDirection::Desc,
@@ -29,6 +29,20 @@ async fn should_find_all_users() {
     // then
     assert!(result.total_elements > 0);
     assert_eq!(result.content.first().unwrap().email, user.email);
+
+    // and when
+    let sort_properties = vec![SortProperty {
+        property: "email".to_string(),
+        direction: SortDirection::Asc,
+    }];
+
+    let result = user_service
+        .find_all(0, 10, Some(sort_properties))
+        .await
+        .unwrap();
+
+    // then
+    assert_eq!(result.content.last().unwrap().email, user.email);
 }
 
 #[actix_rt::test]
