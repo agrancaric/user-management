@@ -15,10 +15,7 @@ async fn should_find_all_users() {
     // given
     let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
     let user = save_user("first", "last", "zzemail@test.com").await;
-    let sort_properties = vec![SortProperty {
-        property: "email".to_string(),
-        direction: SortDirection::Desc,
-    }];
+    let sort_properties = vec![SortProperty::new("email", SortDirection::Desc)];
 
     // when
     let result = user_service
@@ -31,10 +28,7 @@ async fn should_find_all_users() {
     assert_eq!(result.content.first().unwrap().email, user.email);
 
     // and when
-    let sort_properties = vec![SortProperty {
-        property: "email".to_string(),
-        direction: SortDirection::Asc,
-    }];
+    let sort_properties = vec![SortProperty::new("email", SortDirection::Asc)];
 
     let result = user_service
         .find_all(0, 10, Some(sort_properties))
@@ -43,6 +37,26 @@ async fn should_find_all_users() {
 
     // then
     assert_eq!(result.content.last().unwrap().email, user.email);
+}
+
+#[actix_rt::test]
+async fn should_not_fail_sorting_by_any_property() {
+    let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
+    let sort_properties = vec![
+        SortProperty::new("id", SortDirection::Desc),
+        SortProperty::new("first_name", SortDirection::Asc),
+        SortProperty::new("last_name", SortDirection::Desc),
+        SortProperty::new("email", SortDirection::Asc),
+    ];
+
+    // when
+    let result = user_service
+        .find_all(0, 10, Some(sort_properties))
+        .await
+        .unwrap();
+
+    // then
+    assert!(result.total_elements > 0);
 }
 
 #[actix_rt::test]
