@@ -5,6 +5,7 @@ use actix_web_httpauth::middleware::HttpAuthentication;
 use dotenvy::dotenv;
 
 use user_management::common::database::init_pool_and_execute_migrations;
+use user_management::properties::UserManagementProperties;
 use user_management::security::security_api;
 use user_management::security::security_web::jwt_credentials_extractor;
 use user_management::user::user_api;
@@ -16,13 +17,10 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set!");
-    let pool_size = env::var("DATABASE_POOL_SIZE")
-        .expect("DATABASE_POOL_SIZE must be set!")
-        .parse()
-        .unwrap();
+    let properties = envy::from_env::<UserManagementProperties>().unwrap();
 
-    let pool = init_pool_and_execute_migrations(&database_url, pool_size);
+    let pool =
+        init_pool_and_execute_migrations(&properties.database_url, properties.database_pool_size);
     let user_service = UserService::new(pool.clone());
 
     HttpServer::new(move || {
@@ -31,7 +29,7 @@ async fn main() -> std::io::Result<()> {
             .service(user_api::init(user_service.clone()))
             .wrap(HttpAuthentication::with_fn(jwt_credentials_extractor))
     })
-    .bind(("127.0.0.1", 8081))?
+    .bind((properties.server_address, properties.server_port))?
     .run()
     .await
 }

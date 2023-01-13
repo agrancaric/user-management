@@ -20,6 +20,7 @@ diesel = { version = "2.0.0", features = ["postgres"] }
 diesel-async = { version = "0.2.0", features = ["postgres", "deadpool"] }
 diesel_migrations = "2.0.0"
 dotenvy = "0.15"
+envy = "0.4"
 futures = "0.3.25"
 jsonwebtoken = "8.2"
 log = "0.4.0"
