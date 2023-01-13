@@ -2067,7 +2067,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "user_management"
+name = "user-management"
 version = "0.1.0"
 dependencies = [
  "actix-rt",

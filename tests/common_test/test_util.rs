@@ -56,7 +56,7 @@ impl<'a> UserManagementTestContext<'a> {
 fn start_postgres_container<'a>() -> (Container<'a, GenericImage>, String) {
     let user = "postgres";
     let password = "postgres";
-    let database = "user_management";
+    let database = "user-management";
 
     let generic_postgres = images::generic::GenericImage::new("postgres", "14.1-alpine")
         .with_wait_for(WaitFor::Duration {

@@ -2,17 +2,17 @@ FROM rust:1.66 as builder
 
 WORKDIR /usr/local/bin
 
-RUN USER=root cargo new user_management
+RUN USER=root cargo new user-management
 
-COPY Cargo.toml Cargo.lock /usr/local/bin/user_management/
+COPY Cargo.toml Cargo.lock /usr/local/bin/user-management/
 
-WORKDIR /usr/local/bin/user_management
+WORKDIR /usr/local/bin/user-management
 
 RUN cargo build --release
 
-COPY . /usr/local/bin/user_management
+COPY . /usr/local/bin/user-management
 
-WORKDIR /usr/local/bin/user_management
+WORKDIR /usr/local/bin/user-management
 
 RUN cargo build --release
 
@@ -25,6 +25,6 @@ ENV SERVER_PORT 8081
 
 EXPOSE 8081
 
-COPY --from=builder /usr/local/bin/user_management/target/release/user_management /usr/local/bin
+COPY --from=builder /usr/local/bin/user-management/target/release/user-management /usr/local/bin
 
-CMD ["/usr/local/bin/user_management"]
+CMD ["/usr/local/bin/user-management"]

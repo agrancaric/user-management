@@ -58,6 +58,6 @@ Once docker image is built it can be run with following command:
 
 ```shell
 
-docker run -p 8081:8081 -e DATABASE_URL=postgres://postgres:postgres@host.docker.internal/user_management -e DATABASE_POOL_SIZE=10 -e JWT_SECRET=secret user-management
+docker run -p 8081:8081 -e DATABASE_URL=postgres://postgres:postgres@host.docker.internal/user-management -e DATABASE_POOL_SIZE=10 -e JWT_SECRET=secret user-management
 
 ```
