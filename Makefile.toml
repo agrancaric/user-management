@@ -25,3 +25,7 @@ dependencies = ["install-rustfilt", "install-llvm", "install-llvm-cov"]
 command = "cargo"
 args = ["llvm-cov", "--json", "--output-path", "target/coverage.json"]
 dependencies = ["install-rustfilt", "install-llvm", "install-llvm-cov"]
+
+[tasks.build-docker-image]
+command = "docker"
+args = ["build", "-t", "user-management", "-f", "support/build/Dockerfile", "."]
