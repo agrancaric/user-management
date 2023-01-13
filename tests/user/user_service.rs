@@ -75,11 +75,7 @@ async fn should_find_user() {
 #[actix_rt::test]
 async fn should_save_user() {
     // given
-    let user = UserData {
-        first_name: "new user name",
-        last_name: "new user last",
-        email: "new_user_email@test.com",
-    };
+    let user = UserData::new("new user name", "new user last", "new_user_email@test.com");
     let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
 
     // when
@@ -96,11 +92,7 @@ async fn should_update_user() {
     // given
     let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
     let user = save_default_user().await;
-    let user_data = UserData {
-        first_name: "updated user name",
-        last_name: "updated user last",
-        email: "updated@test.com",
-    };
+    let user_data = UserData::new("updated user name", "updated user last", "updated@test.com");
 
     // when
     let result = user_service.update(user.id, user_data).await.unwrap();

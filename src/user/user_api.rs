@@ -54,12 +54,7 @@ async fn save(
 ) -> Result<HttpResponse, UserManagmenetError> {
     let user = user.into_inner();
 
-    let user = UserData {
-        first_name: &user.first_name,
-        last_name: &user.last_name,
-        email: &user.email,
-    };
-
+    let user = from_request(&user);
     let user = user_service.save(user).await?;
 
     Ok(HttpResponse::Ok().json(user))
@@ -75,12 +70,7 @@ async fn update(
     let user_id = id.into_inner();
     let user = user.into_inner();
 
-    let user = UserData {
-        first_name: &user.first_name,
-        last_name: &user.last_name,
-        email: &user.email,
-    };
-
+    let user = from_request(&user);
     let user = user_service.update(user_id, user).await?;
 
     Ok(HttpResponse::Ok().json(user))
@@ -97,4 +87,12 @@ async fn delete(
     user_service.delete(user_id).await?;
 
     Ok(HttpResponse::Ok().json(user_id))
+}
+
+fn from_request(user_request: &SaveUserRequest) -> UserData {
+    UserData::new(
+        &user_request.first_name,
+        &user_request.last_name,
+        &user_request.email,
+    )
 }

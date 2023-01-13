@@ -19,3 +19,13 @@ pub struct UserData<'a> {
     pub last_name: &'a str,
     pub email: &'a str,
 }
+
+impl<'a> UserData<'a> {
+    pub fn new(first_name: &'a str, last_name: &'a str, email: &'a str) -> Self {
+        Self {
+            first_name,
+            last_name,
+            email,
+        }
+    }
+}

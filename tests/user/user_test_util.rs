@@ -55,11 +55,7 @@ pub async fn save_user(first_name: &str, last_name: &str, email: &str) -> User {
         .await
         .unwrap();
 
-    let user = UserData {
-        first_name,
-        last_name,
-        email,
-    };
+    let user = UserData::new(first_name, last_name, email);
 
     diesel::insert_into(user::table)
         .values(&user)
