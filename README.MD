@@ -28,3 +28,36 @@ An example request for finding all users would look like this:
  curl -v --location --request GET http://localhost:8081/users\?limit\=10\&offset\=0 -H 'Content-Type: application/json' -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NzMzODE0MjgsInBlcm1pc3Npb25zIjpbIlVNX1VTRVJfRklORF9BTEwiXSwidXNlcm5hbWUiOiJ1c2VybmFtZSJ9.RJR83lWoLuOb1kGsHhp5S5kec-rven_jY6DoMICOsrU"
 
 ```
+
+Custom tasks are defined using [cargo-make](https://github.com/sagiegurari/cargo-make) and are found in [Makefile.toml](Makefile.toml). The defined tasks include code coverage and docker build.
+Before invoking tasks make should be installed by invoking following command:
+
+```shell
+
+cargo install --force cargo-make
+
+```
+
+For example to build docker image the following command would be executed:
+
+```shell
+
+cargo make build-docker-image
+
+```
+
+and for html code coverage
+
+```shell
+
+cargo make coverage-html
+
+```
+
+Once docker image is built it can be run with following command:
+
+```shell
+
+docker run -p 8081:8081 -e DATABASE_URL=postgres://postgres:postgres@host.docker.internal/user_management -e DATABASE_POOL_SIZE=10 -e JWT_SECRET=secret user-management
+
+```
