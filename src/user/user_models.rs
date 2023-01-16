@@ -14,18 +14,18 @@ pub struct User {
 
 #[derive(Debug, Insertable, AsChangeset)]
 #[diesel(table_name = user)]
-pub struct UserData<'a> {
-    pub first_name: &'a str,
-    pub last_name: &'a str,
-    pub email: &'a str,
+pub struct UserData {
+    pub first_name: String,
+    pub last_name: String,
+    pub email: String,
 }
 
-impl<'a> UserData<'a> {
-    pub fn new(first_name: &'a str, last_name: &'a str, email: &'a str) -> Self {
+impl UserData {
+    pub fn new<T: Into<String>>(first_name: T, last_name: T, email: T) -> Self {
         Self {
-            first_name,
-            last_name,
-            email,
+            first_name: first_name.into(),
+            last_name: last_name.into(),
+            email: email.into(),
         }
     }
 }

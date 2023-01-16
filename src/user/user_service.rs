@@ -68,14 +68,14 @@ impl UserService {
             .await
     }
 
-    pub async fn save(&self, user: &UserData<'_>) -> Result<User, Error> {
+    pub async fn save(&self, user: &UserData) -> Result<User, Error> {
         diesel::insert_into(user::table)
             .values(user)
             .get_result(&mut *self.pool.get().await.unwrap())
             .await
     }
 
-    pub async fn update(&self, id: i32, user: &UserData<'_>) -> Result<User, Error> {
+    pub async fn update(&self, id: i32, user: &UserData) -> Result<User, Error> {
         diesel::update(user::table.find(id))
             .set(user)
             .get_result(&mut *self.pool.get().await.unwrap())
