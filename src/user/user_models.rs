@@ -12,7 +12,7 @@ pub struct User {
     pub email: String,
 }
 
-#[derive(Clone, Copy, Debug, Insertable, AsChangeset)]
+#[derive(Debug, Insertable, AsChangeset)]
 #[diesel(table_name = user)]
 pub struct UserData<'a> {
     pub first_name: &'a str,

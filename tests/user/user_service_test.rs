@@ -79,7 +79,7 @@ async fn should_save_user() {
     let user_service = UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone());
 
     // when
-    let result = user_service.save(user).await.unwrap();
+    let result = user_service.save(&user).await.unwrap();
 
     // then
     assert_eq!(result.first_name, user.first_name);
@@ -95,7 +95,7 @@ async fn should_update_user() {
     let user_data = UserData::new("updated user name", "updated user last", "updated@test.com");
 
     // when
-    let result = user_service.update(user.id, user_data).await.unwrap();
+    let result = user_service.update(user.id, &user_data).await.unwrap();
 
     // then
     assert_eq!(result.first_name, user_data.first_name);

@@ -55,7 +55,7 @@ async fn save(
     let user = user.into_inner();
 
     let user = from_request(&user);
-    let user = user_service.save(user).await?;
+    let user = user_service.save(&user).await?;
 
     Ok(HttpResponse::Ok().json(user))
 }
@@ -71,7 +71,7 @@ async fn update(
     let user = user.into_inner();
 
     let user = from_request(&user);
-    let user = user_service.update(user_id, user).await?;
+    let user = user_service.update(user_id, &user).await?;
 
     Ok(HttpResponse::Ok().json(user))
 }
