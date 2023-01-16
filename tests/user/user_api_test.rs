@@ -4,7 +4,7 @@ use assert_json_diff::{assert_json_eq, assert_json_include};
 use serde_json::{json, Value};
 use test_case::test_case;
 
-use crate::user::user_test_util::{
+use crate::user::user_test_util_test::{
     create_user_json, init_application_and_execute_request, save_default_user,
 };
 

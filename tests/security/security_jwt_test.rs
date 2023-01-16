@@ -3,7 +3,7 @@ use user_management::security::{
     security_model::UserDetails,
 };
 
-use crate::security::test_util::init_test_environment;
+use crate::security::security_test_util::init_test_environment;
 
 #[test]
 fn should_create_and_validate_token() {

@@ -1,4 +1,4 @@
-mod security_api;
-mod security_jwt;
-mod security_web;
-pub mod test_util;
+mod security_api_test;
+mod security_jwt_test;
+mod security_web_test;
+pub mod security_test_util;

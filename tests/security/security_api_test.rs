@@ -7,7 +7,7 @@ use serde_json::json;
 
 use user_management::security::security_api;
 
-use crate::security::test_util::init_test_environment;
+use crate::security::security_test_util::init_test_environment;
 
 #[actix_web::test]
 async fn should_generate_token() {
