@@ -28,7 +28,7 @@ async fn find_all(
 ) -> Result<HttpResponse, UserManagmenetError> {
     let request = request.into_inner();
     let users = user_service
-        .find_all(request.offset, request.limit, request.sort_properties)
+        .find_all(request.offset, request.limit, request.sort_properties.as_ref())
         .await?;
 
     Ok(HttpResponse::Ok().json(users))

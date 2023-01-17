@@ -22,7 +22,7 @@ impl UserService {
         &self,
         offset: i64,
         limit: i64,
-        sort_properties: Option<Vec<SortProperty>>,
+        sort_properties: Option<&Vec<SortProperty>>,
     ) -> Result<Page<User>, Error> {
         let mut query = user::table.into_boxed();
 

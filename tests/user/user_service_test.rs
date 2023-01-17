@@ -19,7 +19,7 @@ async fn should_find_all_users() {
 
     // when
     let result = user_service
-        .find_all(0, 10, Some(sort_properties))
+        .find_all(0, 10, Some(&sort_properties))
         .await
         .unwrap();
 
@@ -31,7 +31,7 @@ async fn should_find_all_users() {
     let sort_properties = vec![SortProperty::new("email", SortDirection::Asc)];
 
     let result = user_service
-        .find_all(0, 10, Some(sort_properties))
+        .find_all(0, 10, Some(&sort_properties))
         .await
         .unwrap();
 
@@ -51,7 +51,7 @@ async fn should_not_fail_sorting_by_any_property() {
 
     // when
     let result = user_service
-        .find_all(0, 10, Some(sort_properties))
+        .find_all(0, 10, Some(&sort_properties))
         .await
         .unwrap();
 
