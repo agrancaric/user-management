@@ -13,12 +13,6 @@ pub struct UserService {
     pool: Pool<AsyncPgConnection>,
 }
 
-impl Clone for UserService {
-    fn clone(&self) -> UserService {
-        UserService::new(self.pool.clone())
-    }
-}
-
 impl UserService {
     pub fn new(pool: Pool<AsyncPgConnection>) -> Self {
         Self { pool }

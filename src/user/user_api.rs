@@ -12,7 +12,7 @@ use super::user_service::UserService;
 
 pub fn init(user_service: UserService) -> impl HttpServiceFactory {
     web::scope("users")
-        .app_data(Data::new(user_service.clone()))
+        .app_data(Data::new(user_service))
         .service(find_all)
         .service(find_by_id)
         .service(save)

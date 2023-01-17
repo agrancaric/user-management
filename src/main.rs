@@ -21,12 +21,11 @@ async fn main() -> std::io::Result<()> {
 
     let pool =
         init_pool_and_execute_migrations(&properties.database_url, properties.database_pool_size);
-    let user_service = UserService::new(pool.clone());
 
     HttpServer::new(move || {
         App::new()
             .service(security_api::init())
-            .service(user_api::init(user_service.clone()))
+            .service(user_api::init(UserService::new(pool.clone())))
             .wrap(HttpAuthentication::with_fn(jwt_credentials_extractor))
     })
     .bind((properties.server_address, properties.server_port))?

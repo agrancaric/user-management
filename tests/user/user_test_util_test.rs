@@ -32,7 +32,7 @@ pub async fn init_application_and_execute_request(
     let authentication = HttpAuthentication::with_fn(jwt_credentials_extractor);
 
     let application = test::init_service(App::new().wrap(authentication).service(user_api::init(
-        UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone()).clone(),
+        UserService::new(USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT.pool.clone()),
     )))
     .await;
 
