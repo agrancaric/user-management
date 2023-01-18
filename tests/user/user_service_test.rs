@@ -5,10 +5,10 @@ use user_management::{
 
 use crate::{
     common_test::test_util::USER_MANAGEMENT_TEST_ENVIRONMENT_CONTEXT,
-    user::user_test_util_test::save_default_user,
+    user::user_test_util::save_default_user,
 };
 
-use super::user_test_util_test::save_user;
+use super::user_test_util::save_user;
 
 #[actix_rt::test]
 async fn should_find_all_users() {
