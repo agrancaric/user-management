@@ -15,24 +15,24 @@ pub enum ErrorType {
 }
 
 impl Display for ErrorType {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, formatter: &mut Formatter) -> Result {
         write!(formatter, "{:?}", self)
     }
 }
 
 #[derive(Debug)]
-pub struct UserManagmenetError {
+pub struct UserManagementError {
     pub message: String,
     pub error_type: ErrorType,
 }
 
-impl Display for UserManagmenetError {
-    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
+impl Display for UserManagementError {
+    fn fmt(&self, formatter: &mut Formatter) -> Result {
         write!(formatter, "{:?}", self)
     }
 }
 
-impl ResponseError for UserManagmenetError {
+impl ResponseError for UserManagementError {
     fn error_response(&self) -> HttpResponse {
         log::error!("Error occurred with message: {}", self.message);
         let response =
@@ -45,18 +45,18 @@ impl ResponseError for UserManagmenetError {
     }
 }
 
-impl From<DieselError> for UserManagmenetError {
-    fn from(error: DieselError) -> UserManagmenetError {
-        UserManagmenetError {
+impl From<DieselError> for UserManagementError {
+    fn from(error: DieselError) -> UserManagementError {
+        UserManagementError {
             message: error.to_string(),
             error_type: ErrorType::DatabaseError(error),
         }
     }
 }
 
-impl From<JwtError> for UserManagmenetError {
-    fn from(error: JwtError) -> UserManagmenetError {
-        UserManagmenetError {
+impl From<JwtError> for UserManagementError {
+    fn from(error: JwtError) -> UserManagementError {
+        UserManagementError {
             message: error.to_string(),
             error_type: ErrorType::AuthenticationError,
         }

@@ -1,7 +1,7 @@
 use actix_web::dev::HttpServiceFactory;
 use actix_web::{post, web, HttpResponse};
 
-use crate::common::errors::UserManagmenetError;
+use crate::common::errors::UserManagementError;
 
 use super::{security_jwt::encode_jwt, security_model::UserDetails};
 
@@ -10,7 +10,7 @@ pub fn init() -> impl HttpServiceFactory {
 }
 
 #[post("")]
-async fn create(user_details: web::Json<UserDetails>) -> Result<HttpResponse, UserManagmenetError> {
+async fn create(user_details: web::Json<UserDetails>) -> Result<HttpResponse, UserManagementError> {
     let user_details = user_details.into_inner();
     let token = encode_jwt(&user_details)?;
 

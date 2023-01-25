@@ -3,7 +3,7 @@ use actix_web::web::Data;
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use actix_web_grants::proc_macro::has_permissions;
 
-use crate::common::errors::UserManagmenetError;
+use crate::common::errors::UserManagementError;
 use crate::common::requests::PageRequest;
 
 use super::user_model::UserData;
@@ -25,7 +25,7 @@ pub fn init(user_service: UserService) -> impl HttpServiceFactory {
 async fn find_all(
     user_service: web::Data<UserService>,
     request: web::Query<PageRequest>,
-) -> Result<HttpResponse, UserManagmenetError> {
+) -> Result<HttpResponse, UserManagementError> {
     let request = request.into_inner();
     let users = user_service
         .find_all(request.offset, request.limit, request.sort_properties.as_ref())
@@ -39,7 +39,7 @@ async fn find_all(
 async fn find_by_id(
     user_service: web::Data<UserService>,
     id: web::Path<i32>,
-) -> Result<HttpResponse, UserManagmenetError> {
+) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
     let user = user_service.find_by_id(user_id).await?;
 
@@ -51,7 +51,7 @@ async fn find_by_id(
 async fn save(
     user_service: web::Data<UserService>,
     user: web::Json<SaveUserRequest>,
-) -> Result<HttpResponse, UserManagmenetError> {
+) -> Result<HttpResponse, UserManagementError> {
     let user = user.into_inner();
 
     let user = from_request(&user);
@@ -66,7 +66,7 @@ async fn update(
     user_service: web::Data<UserService>,
     user: web::Json<SaveUserRequest>,
     id: web::Path<i32>,
-) -> Result<HttpResponse, UserManagmenetError> {
+) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
     let user = user.into_inner();
 
@@ -81,7 +81,7 @@ async fn update(
 async fn delete(
     user_service: web::Data<UserService>,
     id: web::Path<i32>,
-) -> Result<HttpResponse, UserManagmenetError> {
+) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
 
     user_service.delete(user_id).await?;
