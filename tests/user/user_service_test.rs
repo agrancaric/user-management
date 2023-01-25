@@ -1,5 +1,5 @@
 use user_management::{
-    common::types::{SortDirection, SortProperty},
+    common::models::{SortDirection, SortProperty},
     user::{user_model::UserData, user_service::UserService},
 };
 

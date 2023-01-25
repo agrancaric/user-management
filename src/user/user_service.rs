@@ -2,7 +2,7 @@ use diesel::{result::Error, ExpressionMethods, QueryDsl};
 use diesel_async::{pooled_connection::deadpool::Pool, AsyncPgConnection, RunQueryDsl};
 
 use crate::{
-    common::types::{Page, SortProperty},
+    common::models::{Page, SortProperty},
     schema::user,
     sort_by,
 };

@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use validator::Validate;
 
-use super::types::SortProperty;
+use super::models::SortProperty;
 
 #[derive(Deserialize, Validate)]
 pub struct PageRequest {
