@@ -7,7 +7,7 @@ use crate::{
     sort_by,
 };
 
-use super::user_models::{User, UserData};
+use super::user_model::{User, UserData};
 
 pub struct UserService {
     pool: Pool<AsyncPgConnection>,

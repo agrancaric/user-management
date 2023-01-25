@@ -17,7 +17,7 @@ use user_management::{
     },
     user::{
         user_api,
-        user_models::{User, UserData},
+        user_model::{User, UserData},
         user_service::UserService,
     },
 };

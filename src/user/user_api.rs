@@ -6,7 +6,7 @@ use actix_web_grants::proc_macro::has_permissions;
 use crate::common::errors::UserManagmenetError;
 use crate::common::requests::PageRequest;
 
-use super::user_models::UserData;
+use super::user_model::UserData;
 use super::user_request::SaveUserRequest;
 use super::user_service::UserService;
 

@@ -1,6 +1,6 @@
 use user_management::{
     common::types::{SortDirection, SortProperty},
-    user::{user_models::UserData, user_service::UserService},
+    user::{user_model::UserData, user_service::UserService},
 };
 
 use crate::{
