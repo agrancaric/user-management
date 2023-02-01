@@ -1,5 +1,5 @@
 use actix_web::dev::HttpServiceFactory;
-use actix_web::web::Data;
+use actix_web::web::{Data, Json, Path, Query};
 use actix_web::{delete, get, post, put, web, HttpResponse};
 use actix_web_grants::proc_macro::has_permissions;
 
@@ -23,12 +23,16 @@ pub fn init(user_service: UserService) -> impl HttpServiceFactory {
 #[has_permissions("UM_USER_FIND_ALL")]
 #[get("")]
 async fn find_all(
-    user_service: web::Data<UserService>,
-    request: web::Query<PageRequest>,
+    user_service: Data<UserService>,
+    request: Query<PageRequest>,
 ) -> Result<HttpResponse, UserManagementError> {
     let request = request.into_inner();
     let users = user_service
-        .find_all(request.offset, request.limit, request.sort_properties.as_ref())
+        .find_all(
+            request.offset,
+            request.limit,
+            request.sort_properties.as_ref(),
+        )
         .await?;
 
     Ok(HttpResponse::Ok().json(users))
@@ -37,8 +41,8 @@ async fn find_all(
 #[has_permissions("UM_USER_FIND_BY_ID")]
 #[get("/{id}")]
 async fn find_by_id(
-    user_service: web::Data<UserService>,
-    id: web::Path<i32>,
+    user_service: Data<UserService>,
+    id: Path<i32>,
 ) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
     let user = user_service.find_by_id(user_id).await?;
@@ -49,8 +53,8 @@ async fn find_by_id(
 #[has_permissions("UM_USER_SAVE")]
 #[post("")]
 async fn save(
-    user_service: web::Data<UserService>,
-    user: web::Json<SaveUserRequest>,
+    user_service: Data<UserService>,
+    user: Json<SaveUserRequest>,
 ) -> Result<HttpResponse, UserManagementError> {
     let user = user.into_inner();
 
@@ -63,9 +67,9 @@ async fn save(
 #[has_permissions("UM_USER_UPDATE")]
 #[put("/{id}")]
 async fn update(
-    user_service: web::Data<UserService>,
-    user: web::Json<SaveUserRequest>,
-    id: web::Path<i32>,
+    user_service: Data<UserService>,
+    user: Json<SaveUserRequest>,
+    id: Path<i32>,
 ) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
     let user = user.into_inner();
@@ -79,8 +83,8 @@ async fn update(
 #[has_permissions("UM_USER_DELETE")]
 #[delete("/{id}")]
 async fn delete(
-    user_service: web::Data<UserService>,
-    id: web::Path<i32>,
+    user_service: Data<UserService>,
+    id: Path<i32>,
 ) -> Result<HttpResponse, UserManagementError> {
     let user_id = id.into_inner();
 

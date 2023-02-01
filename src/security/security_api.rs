@@ -1,4 +1,5 @@
 use actix_web::dev::HttpServiceFactory;
+use actix_web::web::Json;
 use actix_web::{post, web, HttpResponse};
 
 use crate::common::errors::UserManagementError;
@@ -10,7 +11,7 @@ pub fn init() -> impl HttpServiceFactory {
 }
 
 #[post("")]
-async fn create(user_details: web::Json<UserDetails>) -> Result<HttpResponse, UserManagementError> {
+async fn create(user_details: Json<UserDetails>) -> Result<HttpResponse, UserManagementError> {
     let user_details = user_details.into_inner();
     let token = encode_jwt(&user_details)?;
 
